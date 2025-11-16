@@ -1,32 +1,19 @@
-apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: guestbook-ui
-  labels:
-    app: guestbook
-    component: ui
 spec:
   replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: guestbook
-      component: ui
+      app: guestbook-ui
   template:
     metadata:
       labels:
-        app: guestbook
-        component: ui
+        app: guestbook-ui
     spec:
       containers:
-      - name: guestbook-ui
-        image: gcr.io/heptio-images/ks-guestbook-demo:0.2
-        ports:
-        - name: http
-          containerPort: 80
-        resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 50m
-            memory: 64Mi
+        - image: gcr.io/google-samples/gb-frontend:v5
+          name: guestbook-ui
+          ports:
+            - containerPort: 80
