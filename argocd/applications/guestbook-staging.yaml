@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: guestbook-dev
+  name: guestbook-staging
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,10 +10,10 @@ spec:
   source:
     repoURL: https://github.com/tomcoolpxl/argocd-config.git
     targetRevision: master
-    path: environments/dev
+    path: environments/staging
   destination:
     server: https://kubernetes.default.svc
-    namespace: guestbook-dev
+    namespace: guestbook-staging
   syncPolicy:
     automated:
       prune: true

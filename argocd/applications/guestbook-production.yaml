@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: guestbook-dev
+  name: guestbook-production
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,13 +10,11 @@ spec:
   source:
     repoURL: https://github.com/tomcoolpxl/argocd-config.git
     targetRevision: master
-    path: environments/dev
+    path: environments/production
   destination:
     server: https://kubernetes.default.svc
-    namespace: guestbook-dev
+    namespace: guestbook-production
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
+    # Manual sync for production (no automated section)
