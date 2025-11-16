@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-helm-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    chart: ingress-nginx
+    targetRevision: 4.11.2
+    helm:
+      releaseName: nginx-dev
+      parameters:
+      - name: controller.replicaCount
+        value: "1"
+      - name: controller.service.type
+        value: ClusterIP
+      - name: controller.resources.limits.cpu
+        value: 100m
+      - name: controller.resources.limits.memory
+        value: 128Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nginx-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
